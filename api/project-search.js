@@ -1,5 +1,5 @@
-const supabase = require('../../../lib/supabase');
-const { generateEmbedding } = require('../../../lib/gemini');
+const supabase = require('../lib/supabase');
+const { generateEmbedding } = require('../lib/gemini');
 
 module.exports = async (req, res) => {
   const authHeader = req.headers['authorization'];
@@ -14,10 +14,7 @@ module.exports = async (req, res) => {
   }
 
   const { id, q } = req.query;
-
-  if (!q) {
-    return res.status(400).json({ error: 'q query parameter is required' });
-  }
+  if (!q) return res.status(400).json({ error: 'q is required' });
 
   try {
     const embedding = await generateEmbedding(q);
@@ -29,10 +26,8 @@ module.exports = async (req, res) => {
     });
 
     if (error) throw error;
-
     res.status(200).json({ results: data });
   } catch (err) {
-    console.error('Error searching files:', err);
     res.status(500).json({ error: err.message });
   }
 };

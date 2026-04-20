@@ -1,4 +1,4 @@
-const supabase = require('../../lib/supabase');
+const supabase = require('../lib/supabase');
 
 module.exports = async (req, res) => {
   const authHeader = req.headers['authorization'];
@@ -8,8 +8,13 @@ module.exports = async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  // GET /projects - list all projects
-  if (req.method === 'GET') {
+  const url = req.url.split('?')[0].replace(/\/$/, '');
+  const parts = url.split('/').filter(Boolean);
+  // parts: ['api', 'projects'] or ['api', 'projects', ':id']
+  const projectId = parts.length === 3 ? parts[2] : null;
+
+  // GET /projects - list all
+  if (!projectId && req.method === 'GET') {
     try {
       const { data, error } = await supabase
         .from('projects')
@@ -17,21 +22,16 @@ module.exports = async (req, res) => {
         .order('last_modified', { ascending: false });
 
       if (error) throw error;
-
       res.status(200).json({ projects: data });
     } catch (err) {
-      console.error('Error fetching projects:', err);
       res.status(500).json({ error: err.message });
     }
   }
 
-  // POST /projects - create new project
-  else if (req.method === 'POST') {
+  // POST /projects - create new
+  else if (!projectId && req.method === 'POST') {
     const { name, description, tech_stack } = req.body;
-
-    if (!name) {
-      return res.status(400).json({ error: 'name is required' });
-    }
+    if (!name) return res.status(400).json({ error: 'name is required' });
 
     try {
       const { data, error } = await supabase
@@ -46,10 +46,28 @@ module.exports = async (req, res) => {
         .single();
 
       if (error) throw error;
-
       res.status(201).json({ success: true, project: data });
     } catch (err) {
-      console.error('Error creating project:', err);
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  // GET /projects/:id - single project
+  else if (projectId && req.method === 'GET') {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('id', projectId)
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        return res.status(404).json({ error: 'Project not found' });
+      }
+
+      if (error) throw error;
+      res.status(200).json({ project: data });
+    } catch (err) {
       res.status(500).json({ error: err.message });
     }
   }

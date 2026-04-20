@@ -1,22 +1,12 @@
 {
-  "functions": {
-    "api/**/*.js": {
-      "memory": 512
-    }
-  },
   "rewrites": [
-    { "source": "/api/projects/:id/tree", "destination": "/api/projects/[id]/tree.js" },
-    { "source": "/api/projects/:id/files", "destination": "/api/projects/[id]/files.js" },
-    { "source": "/api/projects/:id/search", "destination": "/api/projects/[id]/search.js" },
-    { "source": "/api/projects/:id", "destination": "/api/projects/[id]/index.js" },
-    { "source": "/api/tools/execute/:name", "destination": "/api/tools/execute/[name].js" },
-    { "source": "/api/tools", "destination": "/api/tools/index.js" },
-    { "source": "/api/memory/checkpoint/latest", "destination": "/api/memory/checkpoint/latest.js" },
-    { "source": "/api/memory/checkpoint", "destination": "/api/memory/checkpoint.js" },
-    { "source": "/api/memory/search", "destination": "/api/memory/search.js" },
-    { "source": "/api/memory/core", "destination": "/api/memory/core.js" },
-    { "source": "/api/memory/fact", "destination": "/api/memory/fact.js" },
-    { "source": "/api/projects", "destination": "/api/projects/index.js" },
-    { "source": "/api/health", "destination": "/api/health.js" }
+    { "source": "/api/memory/(.*)", "destination": "/api/memory" },
+    { "source": "/api/projects/:id/tree", "destination": "/api/project-tree?id=:id" },
+    { "source": "/api/projects/:id/files", "destination": "/api/project-files?id=:id" },
+    { "source": "/api/projects/:id/search", "destination": "/api/project-search?id=:id" },
+    { "source": "/api/projects/:id", "destination": "/api/projects?id=:id" },
+    { "source": "/api/tools/(.*)", "destination": "/api/tools" },
+    { "source": "/api/projects", "destination": "/api/projects" },
+    { "source": "/api/health", "destination": "/api/health" }
   ]
 }
