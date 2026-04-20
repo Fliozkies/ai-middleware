@@ -1,0 +1,17 @@
+{
+  "rewrites": [
+    { "source": "/api/projects/:id/tree", "destination": "/api/projects/[id]/tree" },
+    { "source": "/api/projects/:id/files", "destination": "/api/projects/[id]/files" },
+    { "source": "/api/projects/:id/search", "destination": "/api/projects/[id]/search" },
+    { "source": "/api/projects/:id", "destination": "/api/projects/[id]/index" },
+    { "source": "/api/tools/execute/:name", "destination": "/api/tools/execute/[name]" },
+    { "source": "/api/tools", "destination": "/api/tools/index" },
+    { "source": "/api/memory/checkpoint/latest", "destination": "/api/memory/checkpoint/latest" },
+    { "source": "/api/memory/checkpoint", "destination": "/api/memory/checkpoint" },
+    { "source": "/api/memory/search", "destination": "/api/memory/search" },
+    { "source": "/api/memory/core", "destination": "/api/memory/core" },
+    { "source": "/api/memory/fact", "destination": "/api/memory/fact" },
+    { "source": "/api/projects", "destination": "/api/projects/index" },
+    { "source": "/api/health", "destination": "/api/health" }
+  ]
+}
