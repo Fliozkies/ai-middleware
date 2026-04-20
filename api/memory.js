@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
       const { data, error } = await supabase
         .from('facts')
         .select('id, category, content, importance, created_at')
-        .gte('importance', 2)
+        .eq('importance', 3)
         .order('last_updated', { ascending: false })
         .limit(20);
 
