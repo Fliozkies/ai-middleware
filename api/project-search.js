@@ -2,6 +2,7 @@ const supabase = require('../lib/supabase');
 const { generateEmbedding } = require('../lib/gemini');
 
 module.exports = async (req, res) => {
+  if (req.method === 'OPTIONS') return res.status(200).end();
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 

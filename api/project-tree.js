@@ -1,6 +1,8 @@
 const supabase = require('../lib/supabase');
 
 module.exports = async (req, res) => {
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
