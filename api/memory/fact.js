@@ -1,5 +1,5 @@
 const supabase = require('../../lib/supabase');
-const { classifyFact } = require('../../lib/gemini');
+const { classifyFact, generateEmbedding } = require('../../lib/gemini');
 
 module.exports = async (req, res) => {
   const authHeader = req.headers['authorization'];
@@ -23,6 +23,9 @@ module.exports = async (req, res) => {
     // Flash Lite classifies and tags the fact
     const classification = await classifyFact(content);
 
+    // Generate embedding for semantic search
+    const embedding = await generateEmbedding(content);
+
     const { data, error } = await supabase
       .from('facts')
       .insert({
@@ -30,6 +33,7 @@ module.exports = async (req, res) => {
         category: classification.category,
         importance: importance ?? classification.importance,
         source: source ?? 'conversation',
+        embedding,
         last_updated: new Date().toISOString()
       })
       .select()
