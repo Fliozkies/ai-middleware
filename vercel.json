@@ -7,7 +7,8 @@
     { "source": "/api/projects/:id", "destination": "/api/projects?id=:id" },
     { "source": "/api/tools/(.*)", "destination": "/api/tools" },
     { "source": "/api/projects", "destination": "/api/projects" },
-    { "source": "/api/health", "destination": "/api/health" }
+    { "source": "/api/health", "destination": "/api/health" },
+    { "source": "/api/snapshot", "destination": "/api/snapshot" }
   ],
   "headers": [
     {
